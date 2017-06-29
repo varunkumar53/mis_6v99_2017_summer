@@ -1,12 +1,12 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[155]:
 
 TailNumber=['T1','T2','T3','T4','T5','T6']
 
 
-# In[143]:
+# In[156]:
 
 Source_Destination = {'DAL HOU':65,'HOU AUS':45,'AUS DAL':50,'DAL AUS':50,'AUS HOU':45,'HOU DAL':65}
 
@@ -15,7 +15,7 @@ Source_Destination = {'DAL HOU':65,'HOU AUS':45,'AUS DAL':50,'DAL AUS':50,'AUS H
 Ground_Time = {'DAL':30,'HOU':35,'AUS':25}
 
 
-# In[151]:
+# In[157]:
 
 route='AUS DAL'
 military_time=1735
@@ -25,10 +25,11 @@ destination_time=min_midnight+Source_Destination[route]
 destination_time
 
 
-# In[152]:
+# In[159]:
 
 reach_time=str('{:02}'.format(destination_time//60))+('{:02}'.format(destination_time%60))
 print(reach_time)
+type(reach_time)
 
 
 # In[153]:
