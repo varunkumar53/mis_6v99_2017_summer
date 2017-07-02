@@ -15,9 +15,9 @@ SourceDestination = {'DAL HOU':65,'HOU AUS':45,'AUS DAL':50,'DAL AUS':50,'AUS HO
 
 GroundTime = {'DAL_G1':30,'DAL_G2':30,'HOU_G1':35,'HOU_G2':35,'HOU_G3':35,'AUS_G1':25}
 
-# Assign the number of Legs #
+# Assign the number of Cycle #
 
-Leg=1
+Cycle=1
 
 # Gates to Airport Mapping #
 
@@ -653,7 +653,7 @@ def PrintFlightSchedule(fn, csv_hdr, flt_sched):
 
 # Main program to print the Schedule #
 
-while (Leg<11):
+while (Cycle<11):
     for T in Tail_Number:
         if T == 'T1':
             ArrivvalNowMid_T1 = ConvertMilToMid (ArrivalNow_T1)
@@ -683,8 +683,8 @@ while (Leg<11):
             Schedule_T1 = [T, Origin_T1, Destination_T1, NextDepartureTime_T1, NextArrivalTimeMilitary_T1]
         elif T == 'T2':
             ArrivvalNowMid_T2 = ConvertMilToMid (ArrivalNow_T2)
-            Dep_Nxt_T2_min = NextDeptTime(T, ArrivvalNowMid_T2, Dest_T2)
-            NextDepartureTime_T2 = ConvertMidToMil(Dep_Nxt_T2_min)
+            NextDepartureTimeMid_T2 = NextDeptTime(T, ArrivvalNowMid_T2, Dest_T2)
+            NextDepartureTime_T2 = ConvertMidToMil(NextDepartureTimeMid_T2)
             Ori_T2 = Dest_T2
             NextArrivalTimeMilitary_T2_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T2, Ori_T2)
             NextArrivalTimeMilitary_T2 = NextArrivalTimeMilitary_T2_Dest[0:4]
@@ -709,8 +709,8 @@ while (Leg<11):
             Schedule_T2 = [T, Origin_T2, Destination_T2, NextDepartureTime_T2, NextArrivalTimeMilitary_T2]
         elif T == 'T3':
             ArrivvalNowMid_T3 = ConvertMilToMid (ArrivalNow_T3)
-            Dep_Nxt_T3_min = NextDeptTime(T, ArrivvalNowMid_T3, Dest_T3)
-            NextDepartureTime_T3 = ConvertMidToMil(Dep_Nxt_T3_min)
+            NextDepartureTimeMid_T3 = NextDeptTime(T, ArrivvalNowMid_T3, Dest_T3)
+            NextDepartureTime_T3 = ConvertMidToMil(NextDepartureTimeMid_T3)
             Ori_T3 = Dest_T3
             NextArrivalTimeMilitary_T3_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T3, Ori_T3)
             NextArrivalTimeMilitary_T3 = NextArrivalTimeMilitary_T3_Dest[0:4]
@@ -735,8 +735,8 @@ while (Leg<11):
             Schedule_T3 = [T, Origin_T3, Destination_T3, NextDepartureTime_T3, NextArrivalTimeMilitary_T3]
         elif T == 'T4':
             ArrivvalNowMid_T4 = ConvertMilToMid (ArrivalNow_T4)
-            Dep_Nxt_T4_min = NextDeptTime(T, ArrivvalNowMid_T4, Dest_T4)
-            NextDepartureTime_T4 = ConvertMidToMil(Dep_Nxt_T4_min)
+            NextDepartureTimeMid_T4 = NextDeptTime(T, ArrivvalNowMid_T4, Dest_T4)
+            NextDepartureTime_T4 = ConvertMidToMil(NextDepartureTimeMid_T4)
             Ori_T4 = Dest_T4
             NextArrivalTimeMilitary_T4_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T4, Ori_T4)
             NextArrivalTimeMilitary_T4 = NextArrivalTimeMilitary_T4_Dest[0:4]
@@ -761,8 +761,8 @@ while (Leg<11):
             Schedule_T4 = [T, Origin_T4, Destination_T4, NextDepartureTime_T4, NextArrivalTimeMilitary_T4]
         elif T == 'T5':
             ArrivvalNowMid_T5 = ConvertMilToMid (ArrivalNow_T5)
-            Dep_Nxt_T5_min = NextDeptTime(T, ArrivvalNowMid_T5, Dest_T5)
-            NextDepartureTime_T5 = ConvertMidToMil(Dep_Nxt_T5_min)
+            NextDepartureTimeMid_T5 = NextDeptTime(T, ArrivvalNowMid_T5, Dest_T5)
+            NextDepartureTime_T5 = ConvertMidToMil(NextDepartureTimeMid_T5)
             Ori_T5 = Dest_T5
             NextArrivalTimeMilitary_T5_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T5, Ori_T5)
             NextArrivalTimeMilitary_T5 = NextArrivalTimeMilitary_T5_Dest[0:4]
@@ -787,8 +787,8 @@ while (Leg<11):
             Schedule_T5 = [T, Origin_T5, Destination_T5, NextDepartureTime_T5, NextArrivalTimeMilitary_T5]
         else:
             ArrivvalNowMid_T6 = ConvertMilToMid (ArrivalNow_T6)
-            Dep_Nxt_T6_min = NextDeptTime(T, ArrivvalNowMid_T6, Dest_T6)
-            NextDepartureTime_T6 = ConvertMidToMil(Dep_Nxt_T6_min)
+            NextDepartureTimeMid_T6 = NextDeptTime(T, ArrivvalNowMid_T6, Dest_T6)
+            NextDepartureTime_T6 = ConvertMidToMil(NextDepartureTimeMid_T6)
             Ori_T6 = Dest_T6
             NextArrivalTimeMilitary_T6_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T6, Ori_T6)
             NextArrivalTimeMilitary_T6 = NextArrivalTimeMilitary_T6_Dest[0:4]
@@ -811,7 +811,7 @@ while (Leg<11):
             Destination_T6 = Airport(Dest_T6)
             NextDepartureTime_T6 = IncrementDeparture(Origin_T6, Destination_T6, NextArrivalTimeMilitary_T6)
             Schedule_T6 = [T, Origin_T6, Destination_T6, NextDepartureTime_T6, NextArrivalTimeMilitary_T6]
-    Leg = Leg + 1
+    Cycle = Cycle + 1
     Schedule = [Schedule_T1, Schedule_T2, Schedule_T3, Schedule_T4, Schedule_T5, Schedule_T6]
     Flight_Schedule = Flight_Schedule + Schedule
     print(Flight_Schedule)
