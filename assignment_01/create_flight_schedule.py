@@ -1,7 +1,27 @@
 
 # coding: utf-8
 
-# In[654]:
+# In[735]:
+
+# Function To Convert MidNight Time to Military Time #
+
+def ConvertMidToMil(MidNightTime):
+    MilitaryTime=str('{:02}'.format(MidNightTime//60))+('{:02}'.format(MidNightTime%60))
+    return MilitaryTime;
+
+
+# In[ ]:
+
+# Function To Convert Military Time to Midnight Time #
+
+def ConvertMilToMid(MilitaryTime):
+    ZeroPadTime=('{:04}'.format(MilitaryTime))
+    MidNightTime=(int(str(ZeroPadTime)[:2])*60)+(int(str(ZeroPadTime)[2:]))
+    return MidNightTime
+    
+
+
+# In[ ]:
 
 # Initialize the number of Flights/Tails #
 
@@ -62,11 +82,10 @@ Flight_Schedule=[['T1','HOU','AUS','0600','0645'],
                 ['T3','HOU','DAL','0600','0705'],
                 ['T4','HOU','DAL','0600','0705'],
                 ['T5','DAL','HOU','0600','0705'],
-                ['T6','DAL','HOU','0600','0705']]
+                ['T6','DAL','HOU','0600','0705']
 
 
-
-# In[655]:
+# In[736]:
 
 # Function to calculate Next Departure Time #
 
@@ -93,27 +112,7 @@ def NextDeptTime (T,Arrival,Dest):
         return NextDepartureTime_T6;   
 
 
-# In[656]:
-
-# Function To Convert MidNight Time to Military Time #
-
-def ConvertMidToMil(MidNightTime):
-    MilitaryTime=str('{:02}'.format(MidNightTime//60))+('{:02}'.format(MidNightTime%60))
-    return MilitaryTime;
-
-
-# In[657]:
-
-# Function To Convert Military Time to Midnight Time #
-
-def ConvertMilToMid(MilitaryTime):
-    ZeroPadTime=('{:04}'.format(MilitaryTime))
-    MidNightTime=(int(str(ZeroPadTime)[:2])*60)+(int(str(ZeroPadTime)[2:]))
-    return MidNightTime
-    
-
-
-# In[658]:
+# In[739]:
 
 # Function to calculate Next Arrival Time + Destination #
 
@@ -600,7 +599,7 @@ def NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, Next
                     GrdTimeIncr = GrdTimeIncr + 1
 
 
-# In[659]:
+# In[740]:
 
 # Function to find the Aiport using Gate-Aiport Mapping #
 
@@ -617,7 +616,7 @@ def Airport(Gate):
         return Airport;
 
 
-# In[660]:
+# In[741]:
 
 # Function to increment the Departure Time #
 
@@ -625,20 +624,20 @@ def IncrementDeparture(Origin, Destination, NextArrival):
     NextArrival = int(NextArrival)
     NextArrival = ConvertMilToMid (NextArrival)
     if((Origin=='HOU' and Destination=='AUS')or(Origin=='AUS' and Destination=='HOU')):
-        NextDeparture = NextArrival - 45
+        NextDeparture = NextArrival - SourceDestination[Origin[:3]+' '+Destination]
         NextDeparture = ConvertMidToMil(NextDeparture)
         return NextDeparture;
     elif((Origin=='DAL' and Destination=='AUS')or(Origin=='AUS' and Destination=='DAL')):
-        NextDeparture = NextArrival - 50
+        NextDeparture = NextArrival - SourceDestination[Origin[:3]+' '+Destination]
         NextDeparture = ConvertMidToMil(NextDeparture)
         return NextDeparture;
     elif((Origin=='DAL' and Destination=='HOU')or(Origin=='HOU' and Destination=='DAL')):
-        NextDeparture = NextArrival - 65
+        NextDeparture = NextArrival - SourceDestination[Origin[:3]+' '+Destination]
         NextDeparture = ConvertMidToMil(NextDeparture)
         return NextDeparture;
 
 
-# In[661]:
+# In[742]:
 
 # Function to create the flight_schedule.csv #
 
@@ -649,7 +648,7 @@ def PrintFlightSchedule(fn, csv_hdr, flt_sched):
             print(','.join(s), file=f)
 
 
-# In[662]:
+# In[743]:
 
 # Main program to print the Schedule #
 
@@ -662,18 +661,18 @@ while (Cycle<11):
             Ori_T1 = Dest_T1
             NextArrivalTimeMilitary_T1_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T1, Ori_T1)
             NextArrivalTimeMilitary_T1 = NextArrivalTimeMilitary_T1_Dest[0:4]
-            Dest_upd_T1 = NextArrivalTimeMilitary_T1_Dest[4:]
-            Dest_T1 = Dest_upd_T1
+            UpdatedDestination_T1 = NextArrivalTimeMilitary_T1_Dest[4:]
+            Dest_T1 = UpdatedDestination_T1
             ArrivalNow_T1 = int(NextArrivalTimeMilitary_T1)
-            if Dest_upd_T1 == 'AUS_G1':
+            if UpdatedDestination_T1 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T1)
-            elif Dest_upd_T1 == 'DAL_G1':
+            elif UpdatedDestination_T1 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T1)
-            elif Dest_upd_T1 == 'DAL_G2':
+            elif UpdatedDestination_T1 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T1)
-            elif Dest_upd_T1 == 'HOU_G1':
+            elif UpdatedDestination_T1 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T1)
-            elif Dest_upd_T1 == 'HOU_G2':
+            elif UpdatedDestination_T1 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T1)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T1)
@@ -688,18 +687,18 @@ while (Cycle<11):
             Ori_T2 = Dest_T2
             NextArrivalTimeMilitary_T2_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T2, Ori_T2)
             NextArrivalTimeMilitary_T2 = NextArrivalTimeMilitary_T2_Dest[0:4]
-            Dest_upd_T2 = NextArrivalTimeMilitary_T2_Dest[4:]
-            Dest_T2 = Dest_upd_T2
+            UpdatedDestination_T2 = NextArrivalTimeMilitary_T2_Dest[4:]
+            Dest_T2 = UpdatedDestination_T2
             ArrivalNow_T2 = int(NextArrivalTimeMilitary_T2)
-            if Dest_upd_T2 == 'AUS_G1':
+            if UpdatedDestination_T2 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T2)
-            elif Dest_upd_T2 == 'DAL_G1':
+            elif UpdatedDestination_T2 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T2)
-            elif Dest_upd_T2 == 'DAL_G2':
+            elif UpdatedDestination_T2 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T2)
-            elif Dest_upd_T2 == 'HOU_G1':
+            elif UpdatedDestination_T2 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T2)
-            elif Dest_upd_T2 == 'HOU_G2':
+            elif UpdatedDestination_T2 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T2)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T2)
@@ -714,18 +713,18 @@ while (Cycle<11):
             Ori_T3 = Dest_T3
             NextArrivalTimeMilitary_T3_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T3, Ori_T3)
             NextArrivalTimeMilitary_T3 = NextArrivalTimeMilitary_T3_Dest[0:4]
-            Dest_upd_T3 = NextArrivalTimeMilitary_T3_Dest[4:]
-            Dest_T3 = Dest_upd_T3
+            UpdatedDestination_T3 = NextArrivalTimeMilitary_T3_Dest[4:]
+            Dest_T3 = UpdatedDestination_T3
             ArrivalNow_T3 = int(NextArrivalTimeMilitary_T3)
-            if Dest_upd_T3 == 'AUS_G1':
+            if UpdatedDestination_T3 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T3)
-            elif Dest_upd_T3 == 'DAL_G1':
+            elif UpdatedDestination_T3 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T3)
-            elif Dest_upd_T3 == 'DAL_G2':
+            elif UpdatedDestination_T3 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T3)
-            elif Dest_upd_T3 == 'HOU_G1':
+            elif UpdatedDestination_T3 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T3)
-            elif Dest_upd_T3 == 'HOU_G2':
+            elif UpdatedDestination_T3 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T3)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T3)
@@ -740,18 +739,18 @@ while (Cycle<11):
             Ori_T4 = Dest_T4
             NextArrivalTimeMilitary_T4_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T4, Ori_T4)
             NextArrivalTimeMilitary_T4 = NextArrivalTimeMilitary_T4_Dest[0:4]
-            Dest_upd_T4 = NextArrivalTimeMilitary_T4_Dest[4:]
-            Dest_T4 = Dest_upd_T4
+            UpdatedDestination_T4 = NextArrivalTimeMilitary_T4_Dest[4:]
+            Dest_T4 = UpdatedDestination_T4
             ArrivalNow_T4 = int(NextArrivalTimeMilitary_T4)
-            if Dest_upd_T4 == 'AUS_G1':
+            if UpdatedDestination_T4 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T4)
-            elif Dest_upd_T4 == 'DAL_G1':
+            elif UpdatedDestination_T4 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T4)
-            elif Dest_upd_T4 == 'DAL_G2':
+            elif UpdatedDestination_T4 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T4)
-            elif Dest_upd_T4 == 'HOU_G1':
+            elif UpdatedDestination_T4 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T4)
-            elif Dest_upd_T4 == 'HOU_G2':
+            elif UpdatedDestination_T4 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T4)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T4)
@@ -766,18 +765,18 @@ while (Cycle<11):
             Ori_T5 = Dest_T5
             NextArrivalTimeMilitary_T5_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T5, Ori_T5)
             NextArrivalTimeMilitary_T5 = NextArrivalTimeMilitary_T5_Dest[0:4]
-            Dest_upd_T5 = NextArrivalTimeMilitary_T5_Dest[4:]
-            Dest_T5 = Dest_upd_T5
+            UpdatedDestination_T5 = NextArrivalTimeMilitary_T5_Dest[4:]
+            Dest_T5 = UpdatedDestination_T5
             ArrivalNow_T5 = int(NextArrivalTimeMilitary_T5)
-            if Dest_upd_T5 == 'AUS_G1':
+            if UpdatedDestination_T5 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T5)
-            elif Dest_upd_T5 == 'DAL_G1':
+            elif UpdatedDestination_T5 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T5)
-            elif Dest_upd_T5 == 'DAL_G2':
+            elif UpdatedDestination_T5 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T5)
-            elif Dest_upd_T5 == 'HOU_G1':
+            elif UpdatedDestination_T5 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T5)
-            elif Dest_upd_T5 == 'HOU_G2':
+            elif UpdatedDestination_T5 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T5)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T5)
@@ -792,18 +791,18 @@ while (Cycle<11):
             Ori_T6 = Dest_T6
             NextArrivalTimeMilitary_T6_Dest = NextArrivalTimeDest (T, AUS_G1, DAL_G1, DAL_G2, HOU_G1, HOU_G2, HOU_G3, NextDepartureTime_T6, Ori_T6)
             NextArrivalTimeMilitary_T6 = NextArrivalTimeMilitary_T6_Dest[0:4]
-            Dest_upd_T6 = NextArrivalTimeMilitary_T6_Dest[4:]
-            Dest_T6 = Dest_upd_T6
+            UpdatedDestination_T6 = NextArrivalTimeMilitary_T6_Dest[4:]
+            Dest_T6 = UpdatedDestination_T6
             ArrivalNow_T6 = int(NextArrivalTimeMilitary_T6)
-            if Dest_upd_T6 == 'AUS_G1':
+            if UpdatedDestination_T6 == 'AUS_G1':
                 AUS_G1 = int(NextArrivalTimeMilitary_T6)
-            elif Dest_upd_T6 == 'DAL_G1':
+            elif UpdatedDestination_T6 == 'DAL_G1':
                 DAL_G1 = int(NextArrivalTimeMilitary_T6)
-            elif Dest_upd_T6 == 'DAL_G2':
+            elif UpdatedDestination_T6 == 'DAL_G2':
                 DAL_G2 = int(NextArrivalTimeMilitary_T6)
-            elif Dest_upd_T6 == 'HOU_G1':
+            elif UpdatedDestination_T6 == 'HOU_G1':
                 HOU_G1 = int(NextArrivalTimeMilitary_T6)
-            elif Dest_upd_T6 == 'HOU_G2':
+            elif UpdatedDestination_T6 == 'HOU_G2':
                 HOU_G2 = int(NextArrivalTimeMilitary_T6)
             else:
                 HOU_G3 = int(NextArrivalTimeMilitary_T6)
@@ -819,9 +818,4 @@ while (Cycle<11):
     file_name = 'flight_schedule.csv'
     Flight_Schedule = sorted(Flight_Schedule, key = lambda x: x[0] + x[3])
     PrintFlightSchedule(file_name, csv_header, Flight_Schedule)
-
-
-# In[ ]:
-
-
 
