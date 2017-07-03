@@ -1,4 +1,4 @@
-Traceback (most recent call last):
-  File "create_flight_schedule.py", line 51, in <module>
-    ArrivalNow_T1=AUS_G1=int(ConvertMidToMil(ConvertMilToMid(DeptNow_T1)+SourceDestination[Ori_T1[:3]+' '+Dest_T1[:3]]))
-NameError: name 'ConvertMidToMil' is not defined
+  File "create_flight_schedule.py", line 92
+    def NextDeptTime (T,Arrival,Dest):
+      ^
+SyntaxError: invalid syntax
