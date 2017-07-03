@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[735]:
+# In[744]:
 
 # Function To Convert MidNight Time to Military Time #
 
@@ -10,7 +10,7 @@ def ConvertMidToMil(MidNightTime):
     return MilitaryTime;
 
 
-# In[ ]:
+# In[745]:
 
 # Function To Convert Military Time to Midnight Time #
 
@@ -21,7 +21,7 @@ def ConvertMilToMid(MilitaryTime):
     
 
 
-# In[ ]:
+# In[746]:
 
 # Initialize the number of Flights/Tails #
 
@@ -82,7 +82,7 @@ Flight_Schedule=[['T1','HOU','AUS','0600','0645'],
                 ['T3','HOU','DAL','0600','0705'],
                 ['T4','HOU','DAL','0600','0705'],
                 ['T5','DAL','HOU','0600','0705'],
-                ['T6','DAL','HOU','0600','0705']
+                ['T6','DAL','HOU','0600','0705']]
 
 
 # In[736]:
