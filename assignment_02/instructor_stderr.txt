@@ -1,2 +1,4 @@
-
-This file will contain the contents of stderr (if any) after both preliminary and final grading runs
+Traceback (most recent call last):
+  File "analyze_medicare_data.py", line 93, in <module>
+    while sheet2.cell(row=i,column=1).value!=None:
+NameError: name 'sheet2' is not defined
