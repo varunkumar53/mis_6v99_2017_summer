@@ -1,4 +1,1 @@
-Traceback (most recent call last):
-  File "analyze_medicare_data.py", line 93, in <module>
-    while sheet2.cell(row=i,column=1).value!=None:
-NameError: name 'sheet2' is not defined
+ 
