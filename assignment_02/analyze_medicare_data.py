@@ -83,8 +83,8 @@ for sheet in wb.get_sheet_names():
        
 ## Assign Sheet Names to respective sheets ##
 
-sheet_1=wb.get_sheet_by_name("Hospital National Ranking")
-sheet_2=wb.get_sheet_by_name("Focus States")
+sheet1=wb.get_sheet_by_name("Hospital National Ranking")
+sheet2=wb.get_sheet_by_name("Focus States")
 
 
 
