@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[100]:
+# In[2]:
 
 
 # Importing the necessary library #
@@ -12,9 +12,13 @@ import zipfile
 import openpyxl
 import sqlite3
 import glob
+import string
+import csv
+import sys
+import xlsxwriter
 
 
-# In[101]:
+# In[3]:
 
 # ************************** CSV FILE PART ***************************************** #
 
@@ -48,7 +52,7 @@ z.extractall(staging_dir_name)
 z.close()
 
 
-# In[102]:
+# In[4]:
 
 # ************************** EXCEL FILE PART ***************************************** #
 
@@ -67,8 +71,7 @@ xf.write(r.content)
 xf.close()
 
 
-
-# In[103]:
+# In[5]:
 
 ## Open hospital_ranking_focus_states.xlsx ##
 
@@ -99,7 +102,7 @@ while sheet2.cell(row=i,column=1).value!=None:
 StatesList.insert(0, "Nationwide")
 
 
-# In[104]:
+# In[6]:
 
 wb=openpyxl.Workbook()
 
@@ -121,11 +124,14 @@ while Sheets<11:
         i=i+1
         head=head+1
     Sheets+=1
+    
+    ## Save the file as hospital_ranking.xlsx ##
 
 wb.save("hospital_ranking.xlsx")
 
 
-# In[105]:
+
+# In[7]:
 
 wb=openpyxl.Workbook()
 
@@ -147,14 +153,176 @@ while Sheets<11:
         i=i+1
         head=head+1
     Sheets+=1
+    
+    ## Save the file as measures_statistics.xlsx ##
 
 wb.save("measures_statistics.xlsx")
 
 
 
-# In[106]:
+
+# In[8]:
+
+## Create an SQL Connection as medicare_hospital_compare.db ##
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
+
+
+# In[9]:
+
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
+
+glob_dir=os.path.join(staging_dir_name,"*.csv")
+CSVFileList_With_CSV_EXT=[]
+CSVFileList_Without_EXT=[]
+CSVFileList_With_XLSX_EXT=[]
+for file_name in glob.glob(glob_dir):
+    #print(file_name)
+    CSVFileList_With_CSV_EXT=CSVFileList_With_CSV_EXT+[(os.path.basename(file_name))]
+    CSVFileList_Without_EXT=CSVFileList_Without_EXT+[(os.path.splitext(os.path.basename(file_name))[0])]
+    CSVFileList_With_XLSX_EXT=CSVFileList_With_XLSX_EXT+[(os.path.splitext(os.path.basename(file_name))[0])+".xlsx"]
+    #print("       directory name",os.path.dirname(file_name))
+    #print("          split ext",os.path.splitext(os.path.basename(file_name)))
+    #print("              absolute path:",os.path.abspath(file_name))
+
+
+# In[10]:
+
+## Commands to remove the Corrupted file - FY2015_Percent_Change_in_Medicare_Payments from the file list ##
+
+CSVFileList_Without_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments")
+CSVFileList_With_CSV_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.csv")
+CSVFileList_With_XLSX_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.xlsx")
+
+
+# In[11]:
+
+## Commands to do the encoding part ##
+
+fn=os.path.join(staging_dir_name,"FY2015_Percent_Change_in_Medicare_Payments.csv")
+in_fp=open(fn,"rt",encoding='cp1252')
+input_data=in_fp.read()
+in_fp.close()
+
+
+# In[12]:
+
+## commands to do the decoding part ##
+
+ofn=os.path.join(staging_dir_name,"FY2015_Percent_Change_in_Medicare_Payments.csv")
+out_fp=open(ofn,"wt",encoding='utf-8')
+for c in input_data:
+    if c!='\0':
+        out_fp.write(c)
+out_fp.close()
+
+
+# In[13]:
+
+
+## Code snippet to convert the .CSV files to .Xlsx files ##
+
+if __name__ == '__main__':
+    #listOfFiles = os.listdir(directory)           #  list of all files in the directory
+    listOfFiles = glob.glob(glob_dir)                       
+    for index, fileInList in enumerate(listOfFiles):     
+        fileName  = fileInList[0:fileInList.find('.csv')]     
+        excelFile = xlsxwriter.Workbook(fileName + '.xlsx')
+        worksheet = excelFile.add_worksheet()    
+        #with open(fileName + ".csv", 'rb') as f:
+        #print("File Name --> ",fileName)
+        with open(fileInList, 'rt',encoding='cp1252') as f:   
+            content = csv.reader(f)
+            for index_row, data_in_row in enumerate(content):
+                for index_col, data_in_cell in enumerate(data_in_row):
+                    worksheet.write(index_row, index_col, data_in_cell)
+                    #print("File Name Created --> ",fileName)
+        #print("File Name Created --> ",fileName)
+    excelFile.close()
+   # print (" === Conversion is done ===")
+
+
+# In[14]:
+
+## Function to return the table names after the condition/rules are applied ##
+
+def TableName_Transformation(OldValue):
+    NewValue=OldValue.lower()
+    NewValue=NewValue.replace(" ", "_")
+    NewValue=NewValue.replace("-", "_")
+    NewValue=NewValue.replace("%", "pct")
+    NewValue=NewValue.replace("/", "_")
+    i=0
+    while i<len(list(string.ascii_lowercase)):
+        if NewValue[0] == list(string.ascii_lowercase)[i]:
+            return NewValue;
+        i+=1
+    else:
+        return ("t_"+NewValue);
+
+
+# In[15]:
+
+## Function to return the column names after the condition/rules are applied ##
+
+def ColumnName_Transformation(OldValue):
+    NewValue=OldValue.lower()
+    NewValue=NewValue.replace(" ", "_")
+    NewValue=NewValue.replace("-", "_")
+    NewValue=NewValue.replace("%", "pct")
+    NewValue=NewValue.replace("/", "_")
+    i=0
+    while i<len(list(string.ascii_lowercase)):
+        if NewValue[0] == list(string.ascii_lowercase)[i]:
+            return NewValue;
+        i+=1
+    else:
+        return ("t_"+NewValue);
+
+
+# In[16]:
+
+## Code to create the tables from the CSVFileList_With_XLSX_EXT list ##
+
+conn=sqlite3.connect("medicare_hospital_compare.db")
+c1=conn.cursor()
+c2=conn.cursor()
+FileNo=0
+
+## Code to form a list of columns for each table ##
+
+while FileNo<len(CSVFileList_With_XLSX_EXT):
+    wb=openpyxl.load_workbook(os.path.join(staging_dir_name,CSVFileList_With_XLSX_EXT[FileNo]))
+    sheet=wb.get_sheet_by_name("Sheet1")
+    TableColumns=[]
+    i=1
+    while sheet.cell(row=1,column=i).value!=None:
+        Columns=[sheet.cell(row=1,column=i).value]
+        TableColumns+=Columns
+        i+=1
+        
+        ## Code to create each table with the column names from above ##
+        
+    CreateStr = "CREATE TABLE IF NOT EXISTS " + TableName_Transformation(CSVFileList_Without_EXT[FileNo]) + "(" 
+    j=0
+    CombinedColumn=""
+    CombinedColumn_ins=[]
+    while j<(len(TableColumns)):
+        if j<(len(TableColumns)-1):
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT(50), ")
+            SingleColumn_ins=[(ColumnName_Transformation(TableColumns[j]))]
+        else:
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT(50)")
+            SingleColumn_ins=[ColumnName_Transformation(TableColumns[j])]
+        CombinedColumn=CombinedColumn+SingleColumn
+        CombinedColumn_ins=CombinedColumn_ins+SingleColumn_ins
+        j+=1
+    ##Combine all the part of the create query to form a FULL CREATE STATEMENT AND EXECUTE IT ##
+    SQL_QUERY=CreateStr+CombinedColumn+")"
+    #print(SQL_QUERY)
+    c1.execute(SQL_QUERY)
+    #c2.commit()
+    FileNo+=1
 
 
 # In[ ]:
