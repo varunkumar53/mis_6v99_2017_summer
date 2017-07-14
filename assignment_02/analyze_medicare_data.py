@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 # Importing the necessary library #
@@ -18,7 +18,7 @@ import sys
 import xlsxwriter
 
 
-# In[3]:
+# In[2]:
 
 # ************************** CSV FILE PART ***************************************** #
 
@@ -52,7 +52,7 @@ z.extractall(staging_dir_name)
 z.close()
 
 
-# In[4]:
+# In[3]:
 
 # ************************** EXCEL FILE PART ***************************************** #
 
@@ -71,7 +71,7 @@ xf.write(r.content)
 xf.close()
 
 
-# In[5]:
+# In[4]:
 
 ## Open hospital_ranking_focus_states.xlsx ##
 
@@ -102,73 +102,126 @@ while sheet2.cell(row=i,column=1).value!=None:
 StatesList.insert(0, "Nationwide")
 
 
-# In[6]:
+# In[5]:
 
-wb=openpyxl.Workbook()
+#wb=openpyxl.Workbook()
 
-wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+#wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
 
 
 
-Sheets=0
+#Sheets=0
 
-while Sheets<11:
+#while Sheets<11:
     
-    sheet_1=wb.create_sheet(StatesList[Sheets])
-    i=1
-    head=0
-    Headers=["Provider ID","Hospital Name","City","State","County"]
-    while i<6:
+#    sheet_1=wb.create_sheet(StatesList[Sheets])
+#    i=1
+#    head=0
+#    Headers=["Provider ID","Hospital Name","City","State","County"]
+#    while i<6:
 
-        sheet_1.cell(row=1,column=i,value=Headers[head])
-        i=i+1
-        head=head+1
-    Sheets+=1
+#        sheet_1.cell(row=1,column=i,value=Headers[head])
+#        i=i+1
+#        head=head+1
+#    Sheets+=1
     
     ## Save the file as hospital_ranking.xlsx ##
 
-wb.save("hospital_ranking.xlsx")
+#wb.save("hospital_ranking.xlsx")
+
+#wb=openpyxl.Workbook()
+
+#wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+
+
+
+#Sheets=0
+
+#while Sheets<11:
+    
+#    sheet_1=wb.create_sheet(StatesList[Sheets])
+#    i=1
+#    head=0
+#    Headers=["Provider ID","Hospital Name","City","State","County"]
+#    while i<6:
+
+#        sheet_1.cell(row=1,column=i,value=Headers[head])
+#        i=i+1
+#        head=head+1
+#    Sheets+=1
+    
+    ## Save the file as hospital_ranking.xlsx ##
+
+#wb.save("hospital_ranking.xlsx")
+
+
+#wb=openpyxl.Workbook()
+
+#wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+
+
+
+#Sheets=0
+
+#while Sheets<11:
+    
+#    sheet_1=wb.create_sheet(StatesList[Sheets])
+#    i=1
+#    head=0
+#    Headers=["Provider ID","Hospital Name","City","State","County"]
+#    while i<6:
+
+#        sheet_1.cell(row=1,column=i,value=Headers[head])
+#        i=i+1
+#        head=head+1
+#    Sheets+=1
+    
+    ## Save the file as hospital_ranking.xlsx ##
+
+#wb.save("hospital_ranking.xlsx")
+
+
+
+
+
+# In[6]:
+
+#wb=openpyxl.Workbook()
+
+#wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+
+
+
+#Sheets=0
+
+#while Sheets<11:
+    
+#    sheet_1=wb.create_sheet(StatesList[Sheets])
+#    i=1
+#    head=0
+#    Headers=["Measure ID","Measure Name","Minimum","Maximum","Average","Standard Deviation"]
+#    while i<7:
+
+#        sheet_1.cell(row=1,column=i,value=Headers[head])
+#        i=i+1
+#        head=head+1
+#    Sheets+=1
+    
+    ## Save the file as measures_statistics.xlsx ##
+
+#wb.save("measures_statistics.xlsx")
+
 
 
 
 # In[7]:
-
-wb=openpyxl.Workbook()
-
-wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
-
-
-
-Sheets=0
-
-while Sheets<11:
-    
-    sheet_1=wb.create_sheet(StatesList[Sheets])
-    i=1
-    head=0
-    Headers=["Measure ID","Measure Name","Minimum","Maximum","Average","Standard Deviation"]
-    while i<7:
-
-        sheet_1.cell(row=1,column=i,value=Headers[head])
-        i=i+1
-        head=head+1
-    Sheets+=1
-    
-    ## Save the file as measures_statistics.xlsx ##
-
-wb.save("measures_statistics.xlsx")
-
-
-
-
-# In[8]:
 
 ## Create an SQL Connection as medicare_hospital_compare.db ##
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
 
 
-# In[9]:
+# In[8]:
 
 ## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
 
@@ -186,7 +239,7 @@ for file_name in glob.glob(glob_dir):
     #print("              absolute path:",os.path.abspath(file_name))
 
 
-# In[10]:
+# In[9]:
 
 ## Commands to remove the Corrupted file - FY2015_Percent_Change_in_Medicare_Payments from the file list ##
 
@@ -195,7 +248,7 @@ CSVFileList_With_CSV_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.csv"
 CSVFileList_With_XLSX_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.xlsx")
 
 
-# In[11]:
+# In[14]:
 
 ## Commands to do the encoding part ##
 
@@ -205,7 +258,7 @@ input_data=in_fp.read()
 in_fp.close()
 
 
-# In[12]:
+# In[15]:
 
 ## commands to do the decoding part ##
 
@@ -217,7 +270,7 @@ for c in input_data:
 out_fp.close()
 
 
-# In[13]:
+# In[16]:
 
 
 ## Code snippet to convert the .CSV files to .Xlsx files ##
@@ -242,7 +295,7 @@ if __name__ == '__main__':
    # print (" === Conversion is done ===")
 
 
-# In[14]:
+# In[17]:
 
 ## Function to return the table names after the condition/rules are applied ##
 
@@ -261,7 +314,7 @@ def TableName_Transformation(OldValue):
         return ("t_"+NewValue);
 
 
-# In[15]:
+# In[18]:
 
 ## Function to return the column names after the condition/rules are applied ##
 
@@ -280,18 +333,13 @@ def ColumnName_Transformation(OldValue):
         return ("t_"+NewValue);
 
 
-# In[16]:
-
-## Code to create the tables from the CSVFileList_With_XLSX_EXT list ##
+# In[20]:
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
 c1=conn.cursor()
 c2=conn.cursor()
 FileNo=0
-
-## Code to form a list of columns for each table ##
-
-while FileNo<len(CSVFileList_With_XLSX_EXT):
+while FileNo<61:
     wb=openpyxl.load_workbook(os.path.join(staging_dir_name,CSVFileList_With_XLSX_EXT[FileNo]))
     sheet=wb.get_sheet_by_name("Sheet1")
     TableColumns=[]
@@ -300,29 +348,172 @@ while FileNo<len(CSVFileList_With_XLSX_EXT):
         Columns=[sheet.cell(row=1,column=i).value]
         TableColumns+=Columns
         i+=1
-        
-        ## Code to create each table with the column names from above ##
-        
     CreateStr = "CREATE TABLE IF NOT EXISTS " + TableName_Transformation(CSVFileList_Without_EXT[FileNo]) + "(" 
     j=0
     CombinedColumn=""
     CombinedColumn_ins=[]
     while j<(len(TableColumns)):
         if j<(len(TableColumns)-1):
-            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT(50), ")
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT, ")
             SingleColumn_ins=[(ColumnName_Transformation(TableColumns[j]))]
         else:
-            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT(50)")
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT")
             SingleColumn_ins=[ColumnName_Transformation(TableColumns[j])]
         CombinedColumn=CombinedColumn+SingleColumn
         CombinedColumn_ins=CombinedColumn_ins+SingleColumn_ins
         j+=1
-    ##Combine all the part of the create query to form a FULL CREATE STATEMENT AND EXECUTE IT ##
+    
     SQL_QUERY=CreateStr+CombinedColumn+")"
     #print(SQL_QUERY)
     c1.execute(SQL_QUERY)
-    #c2.commit()
+
+    
+    
+    tup = []
+    for y, rows in enumerate(sheet):
+        tuprow = []
+        if y == 0:
+            continue
+        for row in rows:
+            if str(row.value).strip() != 'None':
+                tuprow.append(str(row.value).strip()) 
+                #tuprow=tuprow+(str(row.value).strip())
+            else:
+                tuprow.append('')
+                #tupnew=
+        tuprow.pop(-1)
+        tup.append(tuprow)
+        #tup=tup+tuple(tuprow)
+        #print("loop end")
+    #print("full loop ends")
+    tuple_1=[tuple(l) for l in tup]
+    insQuery1 = 'INSERT INTO '+ TableName_Transformation(CSVFileList_Without_EXT[FileNo]) + "("
+    insQuery2 = ''
+    for col in CombinedColumn_ins:
+        insQuery1 += col + ', '
+        insQuery2 += '?, '
+    insQuery1 = insQuery1[:-2] + ') VALUES('
+    insQuery2 = insQuery2[:-2] + ')'
+    #print("start")
+    insQuery = insQuery1 + insQuery2
+    #print("end")
+    c2.executemany(insQuery,tuple(tuple_1))
+    conn.commit()
     FileNo+=1
+
+
+# In[21]:
+
+conn=sqlite3.connect("medicare_hospital_compare.db")
+c1=conn.cursor()
+c2=conn.cursor()
+FileNo=0
+while FileNo<1:
+    wb=openpyxl.load_workbook("hospital_ranking_focus_states.xlsx")
+    sheet=wb.get_sheet_by_name("Hospital National Ranking")
+    TableColumns=[]
+    i=1
+    while sheet.cell(row=1,column=i).value!=None:
+        Columns=[sheet.cell(row=1,column=i).value]
+        TableColumns+=Columns
+        i+=1
+    CreateStr = "CREATE TABLE IF NOT EXISTS " + TableName_Transformation("Hospital National Ranking") + "(" 
+    j=0
+    CombinedColumn=""
+    CombinedColumn_ins=[]
+    while j<(len(TableColumns)):
+        if j<(len(TableColumns)-1):
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " TEXT, ")
+            SingleColumn_ins=[(ColumnName_Transformation(TableColumns[j]))]
+        else:
+            SingleColumn=(ColumnName_Transformation(TableColumns[j])+ " NUMBER")
+            SingleColumn_ins=[ColumnName_Transformation(TableColumns[j])]
+        CombinedColumn=CombinedColumn+SingleColumn
+        CombinedColumn_ins=CombinedColumn_ins+SingleColumn_ins
+        j+=1
+    
+    SQL_QUERY=CreateStr+CombinedColumn+")"
+    #print(SQL_QUERY)
+    c1.execute(SQL_QUERY)
+
+    
+    
+    tup = []
+    for y, rows in enumerate(sheet):
+        tuprow = []
+        if y == 0:
+            continue
+        for row in rows:
+            if str(row.value).strip() != 'None':
+                tuprow.append(str(row.value).strip()) 
+                #tuprow=tuprow+(str(row.value).strip())
+            else:
+                tuprow.append('')
+                #tupnew=
+        tuprow.pop(-1)
+        tup.append(tuprow)
+        #tup=tup+tuple(tuprow)
+        #print("loop end")
+    #print("full loop ends")
+    tuple_1=[tuple(l) for l in tup]
+    insQuery1 = 'INSERT INTO '+ TableName_Transformation("Hospital National Ranking") + "("
+    insQuery2 = ''
+    for col in CombinedColumn_ins:
+        insQuery1 += col + ', '
+        insQuery2 += '?, '
+    insQuery1 = insQuery1[:-2] + ') VALUES('
+    insQuery2 = insQuery2[:-2] + ')'
+    #print("start")
+    insQuery = insQuery1 + insQuery2
+    #print("end")
+    c2.executemany(insQuery,tuple(tuple_1))
+    conn.commit()
+    FileNo+=1
+
+
+# In[22]:
+
+StatesDictionary={'California':'CA','Florida':'FL','Georgia':'GA','Illinois':'IL','Kansas':'KS','Michigan':'MI','New York':'NY','Ohio':'OH','Pennsylvania':'PA','Texas':'TX'}
+
+
+# In[24]:
+
+import sqlite3
+from xlsxwriter.workbook import Workbook
+workbook = Workbook('hospital_ranking.xlsx')
+SheetNum=0
+c=conn.cursor()
+while SheetNum<11:
+    worksheet = workbook.add_worksheet(StatesList[SheetNum])
+    
+    if StatesList[SheetNum]=='Nationwide':
+        mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
+        from hospital_general_information
+        join hospital_national_ranking
+        on hospital_national_ranking.provider_id=hospital_general_information.provider_id
+        order by ranking limit 100""")
+    else:
+        l=[StatesDictionary[StatesList[SheetNum]]]
+        mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
+        from hospital_general_information
+        join hospital_national_ranking
+        on hospital_national_ranking.provider_id=hospital_general_information.provider_id
+        where state in ('""" + ','.join(map(str, l)) +"') order by ranking limit 100")
+    Headers=["Provider ID","Hospital Name","City","State","County"]
+    j=0
+    while j<5:
+        worksheet.write(0, j,Headers[j])
+        j+=1
+    i=10
+    for i, row in enumerate(mysel):
+        #print (row)
+        worksheet.write(i+1, 0, row[0])
+        worksheet.write(i+1, 1, row[1])
+        worksheet.write(i+1, 2, row[2])
+        worksheet.write(i+1, 3, row[3])
+        worksheet.write(i+1, 4, row[4])
+    SheetNum+=1
+workbook.close()
 
 
 # In[ ]:
