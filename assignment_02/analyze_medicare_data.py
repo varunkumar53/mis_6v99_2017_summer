@@ -330,7 +330,7 @@ def ColumnName_Transformation(OldValue):
             return NewValue;
         i+=1
     else:
-        return ("c_"+NewValue);
+        return ("t_"+NewValue);
 
 
 # In[20]:
@@ -512,6 +512,46 @@ while SheetNum<11:
         worksheet.write(i+1, 2, row[2])
         worksheet.write(i+1, 3, row[3])
         worksheet.write(i+1, 4, row[4])
+    SheetNum+=1
+workbook.close()
+
+
+# In[26]:
+
+import sqlite3
+from xlsxwriter.workbook import Workbook
+workbook = Workbook('measures_statistics.xlsx')
+SheetNum=0
+c=conn.cursor()
+while SheetNum<11:
+    worksheet = workbook.add_worksheet(StatesList[SheetNum])
+    
+ #   if StatesList[SheetNum]=='Nationwide':
+ #       mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
+ #       from hospital_general_information
+ #       join hospital_national_ranking
+ #       on hospital_national_ranking.provider_id=hospital_general_information.provider_id
+ #       order by ranking limit 100""")
+ #   else:
+ #       l=[StatesDictionary[StatesList[SheetNum]]]
+ #       mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
+ #       from hospital_general_information
+ #       join hospital_national_ranking
+ #       on hospital_national_ranking.provider_id=hospital_general_information.provider_id
+ #       where state in ('""" + ','.join(map(str, l)) +"') order by ranking limit 100")
+    Headers=["Measure ID","Measure Name","Minimum","Maximum","Average","Standard Deviation"]
+    j=0
+    while j<6:
+        worksheet.write(0, j,Headers[j])
+        j+=1
+ #   i=10
+ #   for i, row in enumerate(mysel):
+        #print (row)
+ #       worksheet.write(i+1, 0, row[0])
+ #       worksheet.write(i+1, 1, row[1])
+ #       worksheet.write(i+1, 2, row[2])
+ #       worksheet.write(i+1, 3, row[3])
+ #       worksheet.write(i+1, 4, row[4])
     SheetNum+=1
 workbook.close()
 
