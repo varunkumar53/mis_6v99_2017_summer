@@ -399,6 +399,7 @@ while FileNo<61:
     #print("end")
     c2.executemany(insQuery,tuple(tuple_1))
     conn.commit()
+    wb.close()
     FileNo+=1
 
 
