@@ -1,12 +1,1 @@
-Traceback (most recent call last):
-  File "analyze_medicare_data.py", line 343, in <module>
-    wb=openpyxl.load_workbook(os.path.join(staging_dir_name,CSVFileList_With_XLSX_EXT[FileNo]))
-  File "/home/ancuser/anaconda3/lib/python3.6/site-packages/openpyxl/reader/excel.py", line 238, in load_workbook
-    ws_parser.parse()
-  File "/home/ancuser/anaconda3/lib/python3.6/site-packages/openpyxl/reader/worksheet.py", line 125, in parse
-    dispatcher[tag_name](element)
-  File "/home/ancuser/anaconda3/lib/python3.6/site-packages/openpyxl/reader/worksheet.py", line 280, in parse_row
-    self.parse_cell(cell)
-  File "/home/ancuser/anaconda3/lib/python3.6/site-packages/openpyxl/reader/worksheet.py", line 214, in parse_cell
-    self.ws._cells[(row, column)] = cell
-MemoryError
+ 
