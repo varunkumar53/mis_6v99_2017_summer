@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 # Importing the necessary library #
@@ -14,11 +14,11 @@ import sqlite3
 import glob
 import string
 import csv
-import sys
-import xlsxwriter
+import numpy as np
+from numpy import array
 
 
-# In[5]:
+# In[2]:
 
 # ************************** CSV FILE PART ***************************************** #
 
@@ -52,7 +52,7 @@ z.extractall(staging_dir_name)
 z.close()
 
 
-# In[6]:
+# In[3]:
 
 # ************************** EXCEL FILE PART ***************************************** #
 
@@ -71,7 +71,7 @@ xf.write(r.content)
 xf.close()
 
 
-# In[7]:
+# In[4]:
 
 ## Open hospital_ranking_focus_states.xlsx ##
 
@@ -102,14 +102,14 @@ while sheet2.cell(row=i,column=1).value!=None:
 StatesList.insert(0, "Nationwide")
 
 
-# In[8]:
+# In[5]:
 
 ## Create an SQL Connection as medicare_hospital_compare.db ##
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
 
 
-# In[9]:
+# In[6]:
 
 ## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
 
@@ -127,7 +127,7 @@ for file_name in glob.glob(glob_dir):
     #print("              absolute path:",os.path.abspath(file_name))
 
 
-# In[10]:
+# In[7]:
 
 ## Commands to remove the Corrupted file - FY2015_Percent_Change_in_Medicare_Payments from the file list ##
 
@@ -136,7 +136,7 @@ CSVFileList_With_CSV_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.csv"
 CSVFileList_With_XLSX_EXT.remove("FY2015_Percent_Change_in_Medicare_Payments.xlsx")
 
 
-# In[11]:
+# In[8]:
 
 ## Commands to do the encoding part ##
 i=0
@@ -157,7 +157,7 @@ while i<len(CSVFileList_With_CSV_EXT):
     i+=1
 
 
-# In[12]:
+# In[9]:
 
 ## Function to return the table names after the condition/rules are applied ##
 
@@ -176,7 +176,7 @@ def TableName_Transformation(OldValue):
         return ("t_"+NewValue);
 
 
-# In[13]:
+# In[10]:
 
 ## Function to return the column names after the condition/rules are applied ##
 
@@ -195,7 +195,7 @@ def ColumnName_Transformation(OldValue):
         return ("c_"+NewValue);
 
 
-# In[19]:
+# In[11]:
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
 c1=conn.cursor()
@@ -249,7 +249,7 @@ while FileNo<61:
     FileNo+=1
 
 
-# In[20]:
+# In[12]:
 
 conn=sqlite3.connect("medicare_hospital_compare.db")
 c1=conn.cursor()
@@ -318,12 +318,12 @@ while FileNo<1:
     FileNo+=1
 
 
-# In[21]:
+# In[13]:
 
 StatesDictionary={'California':'CA','Florida':'FL','Georgia':'GA','Illinois':'IL','Kansas':'KS','Michigan':'MI','New York':'NY','Ohio':'OH','Pennsylvania':'PA','Texas':'TX'}
 
 
-# In[22]:
+# In[14]:
 
 import sqlite3
 from xlsxwriter.workbook import Workbook
@@ -351,7 +351,7 @@ while SheetNum<11:
     while j<5:
         worksheet.write(0, j,Headers[j])
         j+=1
-    i=10
+    i=0
     for i, row in enumerate(mysel):
         #print (row)
         worksheet.write(i+1, 0, row[0])
@@ -363,7 +363,71 @@ while SheetNum<11:
 workbook.close()
 
 
-# In[23]:
+# In[15]:
+
+import sqlite3
+import numpy as np
+conn=sqlite3.connect("medicare_hospital_compare.db")
+c=conn.cursor()
+c1=conn.cursor()
+rows=c.execute("""select measure_id,measure_name,score
+        from timely_and_effective_care___hospital
+		where score not in 
+		('High (40,000 - 59,999 patients annually)',
+		'Low (0 - 19,999 patients annually)',
+		'Medium (20,000 - 39,999 patients annually)',
+		'Not Available',
+		'Very High (60,000+ patients annually)')
+		order by measure_id""")
+
+
+# In[16]:
+
+measures_values=[]
+#measures_names=[]
+each_list=[]
+for row in rows:
+    #print(123)
+    if row[2].isdigit():
+        measures_values.append(row[0])
+        #measures_names.append(row[1])
+        #each_list.append(row[2])
+        
+Measures_List=np.unique(measures_values).tolist()
+#measures_names=np.unique(measures_names).tolist()
+
+            
+
+    
+
+
+# In[17]:
+
+conn=sqlite3.connect("medicare_hospital_compare.db")
+c=conn.cursor()
+rows=c.execute("""select distinct measure_id,measure_name
+            from timely_and_effective_care___hospital
+            where score not in 
+            ('High (40,000 - 59,999 patients annually)',
+            'Low (0 - 19,999 patients annually)',
+            'Medium (20,000 - 39,999 patients annually)',
+            'Not Available',
+            'Very High (60,000+ patients annually)')
+            order by measure_id""")
+Measure_ID=[]
+Measure_Name=[]
+for row in rows:
+    Measure_ID.append(row[0])
+    Measure_Name.append(row[1]) 
+
+
+# In[18]:
+
+Measure_Mapping=dict(zip(Measure_ID,Measure_Name))
+    
+
+
+# In[19]:
 
 import sqlite3
 from xlsxwriter.workbook import Workbook
@@ -373,32 +437,97 @@ c=conn.cursor()
 while SheetNum<11:
     worksheet = workbook.add_worksheet(StatesList[SheetNum])
     
- #   if StatesList[SheetNum]=='Nationwide':
- #       mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
- #       from hospital_general_information
- #       join hospital_national_ranking
- #       on hospital_national_ranking.provider_id=hospital_general_information.provider_id
- #       order by ranking limit 100""")
- #   else:
+    if StatesList[SheetNum]=='Nationwide':
+        rows=c.execute("""select measure_id,measure_name,score
+        from timely_and_effective_care___hospital
+		where score not in 
+		('High (40,000 - 59,999 patients annually)',
+		'Low (0 - 19,999 patients annually)',
+		'Medium (20,000 - 39,999 patients annually)',
+		'Not Available',
+		'Very High (60,000+ patients annually)')
+		order by measure_id""")
+    else:
+        l=[StatesDictionary[StatesList[SheetNum]]]
+        rows=c.execute("""select measure_id,measure_name,score
+        from timely_and_effective_care___hospital
+		where score not in 
+		('High (40,000 - 59,999 patients annually)',
+		'Low (0 - 19,999 patients annually)',
+		'Medium (20,000 - 39,999 patients annually)',
+		'Not Available',
+		'Very High (60,000+ patients annually)')
+         and state in ('""" + ','.join(map(str, l)) +"')order by measure_id")
  #       l=[StatesDictionary[StatesList[SheetNum]]]
  #       mysel=c.execute("""select hospital_national_ranking.provider_id,hospital_name,city,state,county_name
  #       from hospital_general_information
  #       join hospital_national_ranking
  #       on hospital_national_ranking.provider_id=hospital_general_information.provider_id
  #       where state in ('""" + ','.join(map(str, l)) +"') order by ranking limit 100")
+    measures_values=[]
+    #measures_names=[]
+    each_list=[]
+    for row in rows:
+    #print(123)
+        if row[2].isdigit():
+            measures_values.append(row[0])
+        #measures_names.append(row[1])
+        #each_list.append(row[2])
+        
+    Measures_List=np.unique(measures_values).tolist()
+#measures_names=np.unique(measures_names).tolist()
     Headers=["Measure ID","Measure Name","Minimum","Maximum","Average","Standard Deviation"]
     j=0
     while j<6:
         worksheet.write(0, j,Headers[j])
         j+=1
- #   i=10
+    each_list=[]
+    i=0
+    while i<len(Measures_List):
+        if StatesList[SheetNum]=='Nationwide':
+            rows=c.execute("""select measure_id,measure_name,score
+            from timely_and_effective_care___hospital
+            where score not in 
+            ('High (40,000 - 59,999 patients annually)',
+            'Low (0 - 19,999 patients annually)',
+            'Medium (20,000 - 39,999 patients annually)',
+            'Not Available',
+            'Very High (60,000+ patients annually)')
+            order by measure_id""")
+        else:
+            l=[StatesDictionary[StatesList[SheetNum]]]
+            rows=c.execute("""select measure_id,measure_name,score
+            from timely_and_effective_care___hospital
+            where score not in 
+            ('High (40,000 - 59,999 patients annually)',
+            'Low (0 - 19,999 patients annually)',
+            'Medium (20,000 - 39,999 patients annually)',
+            'Not Available',
+            'Very High (60,000+ patients annually)')
+             and state in ('""" + ','.join(map(str, l)) +"')order by measure_id")
+        each_list=[]
+        for row in rows:
+            if row[0]==(Measures_List[i]):
+                each_list.append(row[2])
+        each_list = list(map(int, each_list))
+        #print(len(each_list))
+        data =np.asarray(each_list)
+        #print(Measures_List[i])
+        #print("Min=",data.min())
+        #print("Max=",data.max())
+        #print("Mean=",data.mean())
+        #print("Std=",data.std())
+       
  #   for i, row in enumerate(mysel):
         #print (row)
- #       worksheet.write(i+1, 0, row[0])
- #       worksheet.write(i+1, 1, row[1])
- #       worksheet.write(i+1, 2, row[2])
- #       worksheet.write(i+1, 3, row[3])
- #       worksheet.write(i+1, 4, row[4])
+        worksheet.write(i+1, 0, Measures_List[i])
+        worksheet.write(i+1, 1, Measure_Mapping[Measures_List[i]])
+        worksheet.write(i+1, 2, data.min())
+        worksheet.write(i+1, 3, data.max())
+        worksheet.write(i+1, 4, data.mean())
+        worksheet.write(i+1, 5, data.std())
+        i+=1
+    
     SheetNum+=1
 workbook.close()
 
