@@ -397,7 +397,9 @@ Measures_List=np.unique(measures_values).tolist()
 #measures_names=np.unique(measures_names).tolist()
 
             
-
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
     
 
 
@@ -436,6 +438,7 @@ SheetNum=0
 c=conn.cursor()
 while SheetNum<11:
     worksheet = workbook.add_worksheet(StatesList[SheetNum])
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
     
     if StatesList[SheetNum]=='Nationwide':
         rows=c.execute("""select measure_id,measure_name,score
@@ -447,6 +450,7 @@ while SheetNum<11:
 		'Not Available',
 		'Very High (60,000+ patients annually)')
 		order by measure_id""")
+	## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
     else:
         l=[StatesDictionary[StatesList[SheetNum]]]
         rows=c.execute("""select measure_id,measure_name,score
@@ -482,6 +486,8 @@ while SheetNum<11:
         worksheet.write(0, j,Headers[j])
         j+=1
     each_list=[]
+## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
+
     i=0
     while i<len(Measures_List):
         if StatesList[SheetNum]=='Nationwide':
@@ -517,7 +523,7 @@ while SheetNum<11:
         #print("Max=",data.max())
         #print("Mean=",data.mean())
         #print("Std=",data.std())
-       
+       ## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
  #   for i, row in enumerate(mysel):
         #print (row)
         worksheet.write(i+1, 0, Measures_List[i])
@@ -527,6 +533,7 @@ while SheetNum<11:
         worksheet.write(i+1, 4, data.mean())
         worksheet.write(i+1, 5, data.std())
         i+=1
+	## Getting the list of files and creating a list based on ext .CSV,.XLSX ##
     
     SheetNum+=1
 workbook.close()
