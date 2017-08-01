@@ -191,18 +191,5 @@ TestData_File.close()
 Output_File.close()
 
 
-# In[8]:
-
-ProductsList=['P01','P04']
-if 'P04' in ProductsList: ProductsList.remove('P04')
-
-
-# In[9]:
-
-ProductsList
-
-
-# In[ ]:
-
 
 
