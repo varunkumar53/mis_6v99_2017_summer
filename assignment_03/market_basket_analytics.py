@@ -80,7 +80,7 @@ ThreeProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() 
 FourProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==15]
 
 
-# In[7]:
+# In[11]:
 
 TestData_File = open( "market_basket_test.txt", "r" )
 Output_File = open("market_basket_recommendations.txt", "w")
@@ -121,7 +121,21 @@ for line in TestData_File:
             elif (ProductsList[0]==my_list[1] and ProductsList[1]==my_list[2]):
                 Output_File.write(line[:4]+my_list[0]+ "\n" )
         else:
-            Output_File.write(line[:4]+ "\n" )
+            if 'P04' in ProductsList: ProductsList.remove('P04')
+            if 'P08' in ProductsList: ProductsList.remove('P08')
+            x=TwoProductBundle.loc[TwoProductBundle['Pattern'].str.contains(ProductsList[0])]
+            y=x.loc[x['Support'].idxmax()]
+            my_list = y.values[0]
+            my_list = my_list.split(",")
+            if ProductsList[0]==my_list[0]:
+                #text_file = open("demo_numpy.txt", "w")
+                #strr =(line[:4],my_list[1])
+                Output_File.write(line[:4]+my_list[1]+ "\n" )
+                #text_file.close()
+            else:
+                #text_file = open("demo_numpy.txt", "w")
+                Output_File.write(line[:4]+my_list[0]+ "\n" )
+                
             
     elif len(ProductsList)==3:
         x=FourProductBundle.loc[FourProductBundle['Pattern'].str.contains(ProductsList[0])]
@@ -142,10 +156,50 @@ for line in TestData_File:
             elif (ProductsList[0]==my_list[1] and ProductsList[1]==my_list[2] and ProductsList[2]==my_list[3]) :
                 Output_File.write(line[:4]+my_list[0]+ "\n" )
         else:
-            Output_File.write(line[:4]+ "\n" )
+            if 'P04' in ProductsList: ProductsList.remove('P04')
+            if 'P08' in ProductsList: ProductsList.remove('P08')
+            if len(ProductsList)==3:
+                x=ThreeProductBundle.loc[ThreeProductBundle['Pattern'].str.contains(ProductsList[0])]
+                y=x.loc[x['Pattern'].str.contains(ProductsList[1])]
+                if y.shape[0]!=0:
+                    z=y.loc[y['Support'].idxmax()]
+                    my_list = z.values[0]
+                    my_list = my_list.split(",")
+                    if (ProductsList[0]==my_list[0] and ProductsList[1]==my_list[1]) :
+                        Output_File.write(line[:4]+my_list[2]+ "\n" )
+                    elif (ProductsList[0]==my_list[0] and ProductsList[1]==my_list[2]):
+                        Output_File.write(line[:4]+my_list[1]+ "\n" )
+                    elif (ProductsList[0]==my_list[1] and ProductsList[1]==my_list[2]):
+                        Output_File.write(line[:4]+my_list[0]+ "\n" )
+                else:
+                    x=TwoProductBundle.loc[TwoProductBundle['Pattern'].str.contains(ProductsList[0])]
+                    y=x.loc[x['Support'].idxmax()]
+                    my_list = y.values[0]
+                    my_list = my_list.split(",")
+                    if ProductsList[0]==my_list[0]:
+                        #text_file = open("demo_numpy.txt", "w")
+                        #strr =(line[:4],my_list[1])
+                        Output_File.write(line[:4]+my_list[1]+ "\n" )
+                        #text_file.close()
+                    else:
+                        #text_file = open("demo_numpy.txt", "w")
+                        Output_File.write(line[:4]+my_list[0]+ "\n" )
+                    
+                
                     
 TestData_File.close()
 Output_File.close()
+
+
+# In[8]:
+
+ProductsList=['P01','P04']
+if 'P04' in ProductsList: ProductsList.remove('P04')
+
+
+# In[9]:
+
+ProductsList
 
 
 # In[ ]:
