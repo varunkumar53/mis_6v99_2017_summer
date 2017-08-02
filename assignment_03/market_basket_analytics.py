@@ -80,7 +80,7 @@ ThreeProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() 
 FourProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==15]
 
 
-# In[11]:
+# In[7]:
 
 TestData_File = open( "market_basket_test.txt", "r" )
 Output_File = open("market_basket_recommendations.txt", "w")
@@ -189,7 +189,4 @@ for line in TestData_File:
                     
 TestData_File.close()
 Output_File.close()
-
-
-
 
