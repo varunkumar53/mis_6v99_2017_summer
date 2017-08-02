@@ -3,14 +3,30 @@
 
 # In[1]:
 
+# Include all packages starts #
+
+print("# Include all packages starts #")
+
 import requests
 import pandas as pd
 import numpy as np
 import re
 from itertools import combinations
 
+print("# Include all packages ends #")
+
+# Include all packages ends #
+
+
+
 
 # In[2]:
+
+# Downloading the training dataset starts here #
+
+print("# Downloading the training dataset starts here #")
+
+
 
 # ************************** Download the training dataset ***************************************** #
 
@@ -28,8 +44,16 @@ training_dataset=open("market_basket_training.txt","wb")
 training_dataset.write(r.content)
 training_dataset.close()
 
+print("# Downloading the training dataset ends here #")
+
+# Downloading the training dataset ends here #
+
 
 # In[3]:
+
+# Downloading the test dataset starts here #
+
+print("# Downloading the test dataset starts here #")
 
 # ************************** Download the training dataset ***************************************** #
 
@@ -47,16 +71,34 @@ test_dataset=open("market_basket_test.txt","wb")
 test_dataset.write(r.content)
 test_dataset.close()
 
+print("# Downloading the test dataset ends here #")
+
+# Downloading the test dataset ends here #
+
 
 # In[4]:
+
+# Creating training dataframe starts here  #
+
+print("# Creating training dataframe starts here  #")
+
 
 # Creating a dataframe using the  training_dataset #
 
 ColNames = ["A", "B", "C", "D","E"]
 Train_DataFrame = pd.read_csv('market_basket_training.txt', sep=",", names = ColNames,index_col=0)
 
+print("# Creating training dataframe ends here  #")
+
+# Creating training dataframe ends here  #
+
 
 # In[5]:
+
+# Creating support dataframe starts here  #
+
+print("# Creating support dataframe starts here  #")
+
 
 support=0.000001
 # Step to convert into 1s,0s dataframe based on occurence from the tea #
@@ -73,14 +115,32 @@ sdf = pd.DataFrame(pattern, columns=["Pattern", "Support"])
 Support_DataFrame=sdf[sdf.Support >= support]
 
 
+print("# Creating support dataframe ends here  #")
+
+# Creating support dataframe ends here  #
+
+
 # In[6]:
+
+# Creating Bundling dataframe starts here  #
+
+print("# Creating Bundling dataframe starts here  #")
 
 TwoProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==7]
 ThreeProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==11]
 FourProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==15]
 
+print("# Creating Bundling dataframe ends here  #")
+
+# Creating Bundling dataframe ends here  #
+
 
 # In[7]:
+
+# Creating market_basket_recommendations starts here  #
+
+print("# Creating market_basket_recommendations starts here  #")
+
 
 TestData_File = open( "market_basket_test.txt", "r" )
 Output_File = open("market_basket_recommendations.txt", "w")
@@ -184,9 +244,16 @@ for line in TestData_File:
                     else:
                         #text_file = open("demo_numpy.txt", "w")
                         Output_File.write(line[:4]+my_list[0]+ "\n" )
-                    
-                
-                    
+                                                       
 TestData_File.close()
 Output_File.close()
+
+print("# Creating  market_basket_recommendations ends here  #")
+
+# Creating market_basket_recommendations ends here  #
+
+
+# In[ ]:
+
+
 
