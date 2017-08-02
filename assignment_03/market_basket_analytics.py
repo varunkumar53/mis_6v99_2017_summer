@@ -11,7 +11,7 @@ import requests
 import pandas as pd
 import numpy as np
 import re
-from itertools import combinations
+import itertools
 
 print("# Include all packages ends #")
 
@@ -107,7 +107,7 @@ OnesZeros_DataFrame=pd.get_dummies(Train_DataFrame.unstack().dropna()).groupby(l
 RowLength,ColumnLength  =OnesZeros_DataFrame.shape
 pattern = []
 for NoOfCombinations in range(0, ColumnLength+1):
-    for cols in combinations(OnesZeros_DataFrame, NoOfCombinations):
+    for cols in itertools.combinations(OnesZeros_DataFrame, NoOfCombinations):
         NoOfOccurences = OnesZeros_DataFrame[list(cols)].all(axis=1).sum()
         Probability=float(NoOfOccurences)/RowLength
         pattern.append([",".join(cols), Probability])
