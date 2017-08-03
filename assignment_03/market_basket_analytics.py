@@ -18,9 +18,7 @@ print("# Include all packages ends #")
 # Include all packages ends #
 
 
-
-
-# In[21]:
+# In[2]:
 
 # Downloading the training dataset starts here #
 
@@ -49,7 +47,7 @@ print("# Downloading the training dataset ends here #")
 # Downloading the training dataset ends here #
 
 
-# In[22]:
+# In[3]:
 
 # Downloading the test dataset starts here #
 
@@ -100,19 +98,19 @@ print("# Creating training dataframe ends here  #")
 print("# Creating support dataframe starts here  #")
 
 
-support=0.000001
+Initial_Support=1
 # Step to convert into 1s,0s dataframe based on occurence from the tea #
 OnesZeros_DataFrame=pd.get_dummies(Train_DataFrame.unstack().dropna()).groupby(level=1).sum()
 # To get the shape(dimensions) of the dataframe #
 RowLength,ColumnLength  =OnesZeros_DataFrame.shape
 pattern = []
-for NoOfCombinations in range(0, ColumnLength+1):
+for NoOfCombinations in range(1, ColumnLength+1):
     for cols in itertools.combinations(OnesZeros_DataFrame, NoOfCombinations):
         NoOfOccurences = OnesZeros_DataFrame[list(cols)].all(axis=1).sum()
-        Probability=float(NoOfOccurences)/RowLength
-        pattern.append([",".join(cols), Probability])
+        #Probability=float(NoOfOccurences)/RowLength
+        pattern.append([",".join(cols), NoOfOccurences])
 sdf = pd.DataFrame(pattern, columns=["Pattern", "Support"])
-Support_DataFrame=sdf[sdf.Support >= support]
+Support_DataFrame=sdf[sdf.Support >= Initial_Support]
 
 
 print("# Creating support dataframe ends here  #")
@@ -122,12 +120,73 @@ print("# Creating support dataframe ends here  #")
 
 # In[6]:
 
+abc = Train_DataFrame.loc[Train_DataFrame['E'].isnull()]
+efg = abc.loc[abc['D'].notnull()]
+xyz = Train_DataFrame.loc[Train_DataFrame['D'].isnull()]
+
+
+# In[7]:
+
+# Creating support dataframe starts here  #
+
+print("# Creating support dataframe starts here  #")
+
+
+Initial_Support=1
+# Step to convert into 1s,0s dataframe based on occurence from the tea #
+OnesZeros_DataFrame=pd.get_dummies(xyz.unstack().dropna()).groupby(level=1).sum()
+# To get the shape(dimensions) of the dataframe #
+RowLength,ColumnLength  =OnesZeros_DataFrame.shape
+pattern = []
+for NoOfCombinations in range(1, ColumnLength+1):
+    for cols in itertools.combinations(OnesZeros_DataFrame, NoOfCombinations):
+        NoOfOccurences = OnesZeros_DataFrame[list(cols)].all(axis=1).sum()
+        #Probability=float(NoOfOccurences)/RowLength
+        pattern.append([",".join(cols), NoOfOccurences])
+sdf = pd.DataFrame(pattern, columns=["Pattern", "Support"])
+Support_DataFrame_xyz=sdf[sdf.Support >= Initial_Support]
+
+
+print("# Creating support dataframe ends here  #")
+
+# Creating support dataframe ends here  #
+
+
+# In[8]:
+
+# Creating support dataframe starts here  #
+
+print("# Creating support dataframe starts here  #")
+
+
+Initial_Support=1
+# Step to convert into 1s,0s dataframe based on occurence from the tea #
+OnesZeros_DataFrame=pd.get_dummies(efg.unstack().dropna()).groupby(level=1).sum()
+# To get the shape(dimensions) of the dataframe #
+RowLength,ColumnLength  =OnesZeros_DataFrame.shape
+pattern = []
+for NoOfCombinations in range(1, ColumnLength+1):
+    for cols in itertools.combinations(OnesZeros_DataFrame, NoOfCombinations):
+        NoOfOccurences = OnesZeros_DataFrame[list(cols)].all(axis=1).sum()
+        #Probability=float(NoOfOccurences)/RowLength
+        pattern.append([",".join(cols), NoOfOccurences])
+sdf = pd.DataFrame(pattern, columns=["Pattern", "Support"])
+Support_DataFrame_efg=sdf[sdf.Support >= Initial_Support]
+
+
+print("# Creating support dataframe ends here  #")
+
+# Creating support dataframe ends here  #
+
+
+# In[9]:
+
 # Creating Bundling dataframe starts here  #
 
 print("# Creating Bundling dataframe starts here  #")
 
-TwoProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==7]
-ThreeProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==11]
+TwoProductBundle=Support_DataFrame_xyz.loc[Support_DataFrame_xyz['Pattern'].str.len() ==7]
+ThreeProductBundle=Support_DataFrame_efg.loc[Support_DataFrame_efg['Pattern'].str.len() ==11]
 FourProductBundle=Support_DataFrame.loc[Support_DataFrame['Pattern'].str.len() ==15]
 
 print("# Creating Bundling dataframe ends here  #")
@@ -135,7 +194,7 @@ print("# Creating Bundling dataframe ends here  #")
 # Creating Bundling dataframe ends here  #
 
 
-# In[29]:
+# In[10]:
 
 # Creating market_basket_recommendations starts here  #
 
@@ -244,7 +303,7 @@ for line in TestData_File:
                     elif (ProductsList[0]==my_list[1] and ProductsList[1]==my_list[2]):
                         Output_File.write(line[:4]+my_list[0]+ "\n" )
             else:
-                print(line[:4])
+                #print(line[:4])
                 x=TwoProductBundle.loc[TwoProductBundle['Pattern'].str.contains(ProductsList[0])]
                 y=x.loc[x['Support'].idxmax()]
                 my_list = y.values[0]
@@ -264,9 +323,4 @@ Output_File.close()
 print("# Creating  market_basket_recommendations ends here  #")
 
 # Creating market_basket_recommendations ends here  #
-
-
-# In[ ]:
-
-
 
