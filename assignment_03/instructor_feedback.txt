@@ -1,12 +1,28 @@
 
-2017-08-02 13:06 Wednesday
+2017-08-02 19:45 Wednesday
  Checking Directory: assignment_03 File: market_basket_analytics.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
 Please check instructor_stdout.txt for stdout (if any)
 Please check instructor_stderr.txt for stderr (if any)
 Verifying that your market_basket_recommendations.txt file exists and matches the solution file
-Number of lines in your file is 70 and should be 100
-No further checks can be made until the number of lines match
-Total matches: 0 of 100
-Total Points: 0
+Line 026 does not have the correct recommendation
+Line 033 does not have the correct recommendation
+Line 038 does not have the correct recommendation
+Line 040 does not have the correct recommendation
+Line 041 does not have the correct recommendation
+Line 045 does not have the correct recommendation
+Line 046 does not have the correct recommendation
+Line 047 does not have the correct recommendation
+Line 054 does not have the correct recommendation
+Line 055 does not have the correct recommendation
+Line 058 does not have the correct recommendation
+Line 063 does not have the correct recommendation
+Line 069 does not have the correct recommendation
+Line 074 does not have the correct recommendation
+Line 075 does not have the correct recommendation
+Line 091 does not have the correct recommendation
+Line 094 does not have the correct recommendation
+Line 096 does not have the correct recommendation
+Total matches: 82 of 100
+Total Points: 82
