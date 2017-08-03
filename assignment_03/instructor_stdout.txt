@@ -8,11 +8,11 @@
 # Creating training dataframe ends here  #
 # Creating support dataframe starts here  #
 # Creating support dataframe ends here  #
+# Creating support dataframe starts here  #
+# Creating support dataframe ends here  #
+# Creating support dataframe starts here  #
+# Creating support dataframe ends here  #
 # Creating Bundling dataframe starts here  #
 # Creating Bundling dataframe ends here  #
 # Creating market_basket_recommendations starts here  #
-010,
-033,
-068,
-070,
 # Creating  market_basket_recommendations ends here  #
